@@ -1,40 +1,39 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Keyboard } from 'react-native'
 
-export default class ListForm extends Component {
-  constructor(props) {
-    super(props)
-    
-    this.state = { input: '' }
-    
-    this.handleInput = this.handleInput.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
+// Store
+import dataStore from '../store/data'
+
+const ListForm = () => {
+  const [input, setInput] = useState('')
+  const { addItem } = dataStore()
+
+  const handleSubmit = () => {
+    if (input != '') {
+      addItem({
+        id: Math.random().toString(16).substr(2, 8),
+        title: input,
+        done: false
+      })
+
+      setInput('')
+    }
   }
 
-  handleInput(input) {
-    this.setState({input})
-  }
-
-  handleSubmit() {
-    console.log(this.state)
-  }
-
-  render() {
-    return (
-      <View>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Task"
-          onBlur={Keyboard.dismiss}
-          value={this.state.input}
-          onChangeText={this.handleInput}
-        />
-        <TouchableOpacity style={styles.button} onPress={this.handleSubmit}>
-          <Text style={styles.buttonText}>Add</Text>
-        </TouchableOpacity>
-      </View>
-    )
-  }
+  return (
+    <View>
+      <TextInput
+        style={styles.textInput}
+        placeholder="Task"
+        onBlur={Keyboard.dismiss}
+        value={input}
+        onChangeText={setInput}
+      />
+      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+        <Text style={styles.buttonText}>Add</Text>
+      </TouchableOpacity>
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -57,3 +56,5 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   }
 })
+
+export default ListForm

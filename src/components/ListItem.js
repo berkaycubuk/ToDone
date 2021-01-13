@@ -1,20 +1,33 @@
-import React, {Component} from 'react'
+import React, {useState} from 'react'
 import {Text, View, StyleSheet} from 'react-native'
 
-class ListItem extends Component {
-  render() {
-    return (
-      <View style={styles.listItem}>
-        <Text style={styles.listItemText}>{this.props.item.title}</Text>
-      </View>
-    )
-  }
+import Checkbox from '@react-native-community/checkbox'
+
+// Store
+import dataStore from '../store/data'
+
+const ListItem = (props) => {
+  const [done, setDone] = useState(props.item.done)
+  const { updateItem } = dataStore()
+
+  return (
+    <View style={[styles.listItem, done && styles.listItemDone]}>
+      <Checkbox disabled={false} value={done} onValueChange={(newValue) => {updateItem(props.item.id, props.item); setDone(newValue);}} />
+      <Text style={styles.listItemText}>{props.item.title}</Text>
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
   listItem: {
-    padding: 15,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
     marginTop: 10,
+    padding: 5,
+  },
+  listItemDone: {
+    backgroundColor: '#eee'
   },
   listItemText: {
     fontSize: 18,
