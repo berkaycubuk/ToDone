@@ -12,7 +12,7 @@ const ListItem = (props) => {
 
   return (
     <View style={[styles.listItem, done && styles.listItemDone]}>
-      <Checkbox disabled={false} value={done} onValueChange={(newValue) => {updateItem(props.item.id, props.item); setDone(newValue);}} />
+      <Checkbox disabled={false} value={done} onValueChange={(newValue) => {setDone(newValue);  updateItem(props.item.id, {id: props.item.id, title: props.item.title, done: newValue});}} />
       <Text style={styles.listItemText}>{props.item.title}</Text>
     </View>
   )

@@ -3,46 +3,22 @@ import create from 'zustand'
 
 const STORAGE_KEY = '@list'
 
-let list = [
-  {
-      id: '1231',
-      title: 'Deneme',
-      done: false
-    },
-    {
-      id: '1232',
-      title: 'Deneme',
-      done: false
-    },
-    {
-      id: '1235',
-      title: 'Deneme',
-      done: false
-    },
-    {
-      id: '1234',
-      title: 'Deneme',
-      done: true
-    }
-]
+let list = []
 
 const fetchData = async () => {
   try {
     const jsonValue = await AsyncStorage.getItem(STORAGE_KEY)
-    list = []
-    // return [] // JSON.parse(jsonValue)
-    // return jsonValue != null ? JSON.parse(jsonValue) : []
+    list = JSON.parse(jsonValue)
+    console.log(list)
+    return list
   } catch(e) {
     alert('Failed to load...')
   }
 }
 
-fetchData()
-
 const saveData = async (latestList) => {
   try {
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(latestList))
-    console.log(JSON.stringify(latestList))
   } catch(e) {
     alert('Failed to save...')
   }
@@ -55,6 +31,10 @@ const useStore = create(set => ({
     saveData(state.list)
     return {list: state.list}
   }),
+  fetch: async () => {
+    await fetchData()
+    set(() => ({ list: list }))
+  },
   updateItem: (id, item) => set(state => {
     const index = state.list.findIndex(e => (e.id == id))
     if (index != -1) {

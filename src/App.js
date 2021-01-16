@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {
   StyleSheet, 
   Text, 
@@ -13,7 +13,11 @@ import ListForm from './components/ListForm'
 import dataStore from './store/data'
 
 const App = () => {
-  const { list } = dataStore()
+  const { list, fetch } = dataStore()
+
+  useEffect(() => {
+    fetch()
+  }, [])
 
   return (
     <>
