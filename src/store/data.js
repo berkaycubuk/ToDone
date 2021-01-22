@@ -9,7 +9,9 @@ const fetchData = async () => {
   try {
     const jsonValue = await AsyncStorage.getItem(STORAGE_KEY)
     list = JSON.parse(jsonValue)
-    console.log(list)
+    if (list == null) {
+      list = []
+    }
     return list
   } catch(e) {
     alert('Failed to load...')
@@ -27,7 +29,18 @@ const saveData = async (latestList) => {
 const useStore = create(set => ({
   list: list,
   addItem: (item) => set(state => {
-    state.list[state.list.length] = item
+    if (state.list && state.list[0]) {
+      state.list[state.list.length] = item
+      saveData(state.list)
+      return {list: state.list}
+    } else {
+      state.list.push(item)
+      saveData(state.list)
+      return {list: state.list}
+    }
+  }),
+  deleteItem: (item) => set(state => {
+    state.list = state.list.filter(listItem => listItem !== item)
     saveData(state.list)
     return {list: state.list}
   }),
