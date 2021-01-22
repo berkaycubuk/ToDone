@@ -1,4 +1,4 @@
-package com.todone;
+package com.berkaycubuk.todone;
 
 import com.facebook.react.ReactActivity;
 

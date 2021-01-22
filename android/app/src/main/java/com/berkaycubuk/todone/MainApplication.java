@@ -1,4 +1,4 @@
-package com.todone;
+package com.berkaycubuk.todone;
 
 import android.app.Application;
 import android.content.Context;
